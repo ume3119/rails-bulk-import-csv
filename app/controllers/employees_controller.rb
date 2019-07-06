@@ -1,5 +1,11 @@
 class EmployeesController < ApplicationController
+  require 'csv'
+  include CompaniesConcerns
+  include EmployeesConcerns
+
   before_action :set_employee, only: [:show, :edit, :update, :destroy]
+  before_action :company, only: [:bulk_import]
+  before_action :check_file, only: [:bulk_import]
 
   # GET /employees
   # GET /employees.json
@@ -61,6 +67,22 @@ class EmployeesController < ApplicationController
     end
   end
 
+  # GET /employees/upload_csv
+  def upload_csv
+    @companies = Company.all
+  end
+
+  # POST /employees/bulk_import
+  def bulk_import
+    @result = import()
+    if @result.empty?
+      redirect_to employees_url, notice: 'CSV Successfully Imported.'
+    else
+      @companies = Company.all
+      render 'upload_csv'
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_employee
@@ -70,5 +92,9 @@ class EmployeesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def employee_params
       params.require(:employee).permit(:name, :email, :phone, :company_id)
+    end
+
+    def bulk_import_params
+      params.permit(:company, :file)
     end
 end

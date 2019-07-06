@@ -19,7 +19,7 @@
         <td><%= employee.name %></td>
         <td><%= employee.email %></td>
         <td><%= employee.phone %></td>
-        <td><%= employee.company %></td>
+        <td><%= employee.company&.name %></td>
         <td><%= link_to 'Show', employee %></td>
         <td><%= link_to 'Edit', edit_employee_path(employee) %></td>
         <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -31,3 +31,4 @@
 <br>
 
 <%= link_to 'New Employee', new_employee_path %>
+<%= link_to 'Import via CSV', upload_csv_path %>

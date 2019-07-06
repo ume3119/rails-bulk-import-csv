@@ -1,0 +1,17 @@
+<% if (result && !result.empty?) %>
+
+  <div id="error_explanation">
+    <h2><%=  pluralize(@result.count, "employees")  %> were not saved:</h2>
+
+    <ul>
+      <%  @result.each do |error|  %>
+        <li><%= error[:email] %>: <%=  error[:errors][0]  %></li>
+      <%  end  %>
+    </ul>
+  </div>
+
+<%  elsif flash[:error] %>
+  <div id="error_explanation">
+    <h2><%= flash[:error] %> </h2>
+  </div>
+<% end %>

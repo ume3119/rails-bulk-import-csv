@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2019_05_20_082356) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "companies", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -22,7 +25,7 @@ ActiveRecord::Schema.define(version: 2019_05_20_082356) do
     t.string "name"
     t.string "email"
     t.string "phone"
-    t.integer "company_id"
+    t.bigint "company_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "parent_id"
@@ -34,18 +37,20 @@ ActiveRecord::Schema.define(version: 2019_05_20_082356) do
   end
 
   create_table "employees_policies", id: false, force: :cascade do |t|
-    t.integer "employee_id", null: false
-    t.integer "policy_id", null: false
+    t.bigint "employee_id", null: false
+    t.bigint "policy_id", null: false
     t.index ["employee_id", "policy_id"], name: "index_employees_policies_on_employee_id_and_policy_id"
     t.index ["policy_id", "employee_id"], name: "index_employees_policies_on_policy_id_and_employee_id"
   end
 
   create_table "policies", force: :cascade do |t|
     t.string "name"
-    t.integer "company_id"
+    t.bigint "company_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_policies_on_company_id"
   end
 
+  add_foreign_key "employees", "companies"
+  add_foreign_key "policies", "companies"
 end

@@ -1,0 +1,8 @@
+<%= render 'csv_errors', result: @result %>
+
+<h3>Upload Employees CSV</h3>
+<%= form_tag bulk_import_path, multipart: true do %>
+  <%= select_tag "company", options_from_collection_for_select(@companies, "id", "name") %>
+  <%= file_field_tag :file, :accept => 'text/csv' %>
+  <%= submit_tag "Import" %>
+<% end %>
